@@ -1,0 +1,1 @@
+{"case": 3747, "normal": 4427, "remedycase": 261, "remedypics": 63}

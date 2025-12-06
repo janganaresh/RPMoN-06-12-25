@@ -1,0 +1,75 @@
+
+----------------------------------------------------
+
+✔ This updates all piles in Area A001
+✔ Only when assessment says OE Approved
+✔ No need to give Table ID or Pile No
+
+If you want the same for A002 / A003 / A004 / A005, just tell me — I’ll generate all queries.
+
+
+UPDATE piles p
+JOIN assessment a
+  ON p.`Area ID` = a.`Area ID`
+ AND p.`Table ID` = a.`Table ID`
+ AND p.`Pile No` = a.`Pile No`
+SET 
+    p.`Assessment Status` = 'Assessment Done',
+    p.`Assessment Case` = a.`Assessment Case`
+WHERE a.`Assessment Status` = 'OE Approved'
+  AND p.`Area ID` = 'A001';
+
+----------------------------------------------------
+
+SELECT 
+    `Area ID`,
+    COALESCE(SUM(`Assessment Status` = 'Assessment Done'), 0) AS Assessment_done_count,
+    COALESCE(SUM(`Remedy Status` = 'Remedy Done'), 0) AS Remedy_done_count,
+    COUNT(*) AS Total_piles
+FROM piles
+GROUP BY `Area ID`
+ORDER BY `Area ID`;
+
+------------------------------------------------------
+for ass case and ass Status put in piles
+
+UPDATE piles p
+JOIN assessment a
+  ON p.`Area ID` = a.`Area ID`
+ AND p.`Table ID` = a.`Table ID`
+ AND p.`Pile No` = a.`Pile No`
+SET 
+    p.`Assessment Status` = 'Assessment Done',
+    p.`Assessment Case` = a.`Assessment Case`
+WHERE a.`Assessment Status` = 'OE Approved'
+  AND p.`Area ID` = 'A002';
+  
+--------------------------------------------------------
+for remddy done and Date
+
+UPDATE piles p
+JOIN remedy r
+  ON p.`Area ID` = r.`Area ID`
+ AND p.`Table ID` = r.`Table ID`
+ AND p.`Pile No` = r.`Pile No`
+SET 
+    p.`Remedy Status` = 'Remedy Done',
+    p.`Task Date` = r.`Task Date`
+WHERE r.`Picture Location` IS NOT NULL
+  AND r.`Picture Location` <> ''
+  AND p.`Area ID` = 'A004';
+
+-------------------------------------------------------
+to get areawise piles info 
+
+SELECT 
+    `Area ID`,
+    `Table ID`,
+    `Pile No`,
+    `Assessment Status`,
+    `Assessment Case`,   
+    `Remedy Status`,
+    `Task Date`        
+FROM piles
+WHERE `Area ID` = 'A005'
+ORDER BY `Table ID`, `Pile No`;
